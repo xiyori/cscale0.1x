@@ -23,7 +23,7 @@ Loosely based on [adaptive pixel art scaler](https://hiivelabs.com/blog/gamedev/
 | ----------- | --------------------- |
 | Aggressive downscaling of high quality artwork | Pixel art downscaling |
 | Uses clean contours | Uses raw edges from Canny edge detector |
-| Performs all preprocessing in the original image | Processes already downscaled image |
+| Performs all preprocessing in the original image | Processes the downscaled image |
 | Fast optimized code | Slow Python loops |
 
 See [examples](examples/) for cscale0.1x capabilities demonstration.
