@@ -15,7 +15,7 @@ Demo: lanczos4 -> area -> cscale0.1x
 + Automatic contour extraction, eliminates double and fake edges
 + Great results out of the box
 + Extensive configuration options
-+ Comprehensible usage manual
++ Comprehensive usage manual
 
 Loosely based on [adaptive pixel art scaler](https://hiivelabs.com/blog/gamedev/graphics/2025/01/19/adaptive-downscaling-pixel-art/).
 
