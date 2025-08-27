@@ -2,7 +2,7 @@
 
 Contour-preserving adaptive downscaling for artwork, cartoons, pixel art, [wplace](https://wplace.live) image scaling, etc.
 
-[<img align="left" src="assets/demo.gif" alt="lanczos4 -> area -> cscale0.1x" width="500px"/>](pic/)
+[<img align="center" src="assets/demo.gif" alt="lanczos4 -> area -> cscale0.1x" width="500px"/>](pic/)
 
 **Key features**
 
