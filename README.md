@@ -1,9 +1,8 @@
 # cscale0.1x - Extreme Contour Downscaler
 
-Contour-preserving adaptive downscaling for artwork, cartoons, pixel art creation, [wplace](https://wplace.live) image scaling, etc.
+Contour-preserving adaptive downscaling for artwork, cartoons, pixel art, [wplace](https://wplace.live) image scaling, etc.
 
-![alt text](assets/demo.gif)
-<span style="font-size:0.5em;">Demo: lanczos4 -> area -> cscale0.1x</span>
+[<img align="left" src="assets/demo.gif" alt="lanczos4 -> area -> cscale0.1x" width="500px"/>](pic/)
 
 **Key features**
 
@@ -25,7 +24,7 @@ Loosely based on [adaptive pixel art scaler](https://hiivelabs.com/blog/gamedev/
 | Performs all preprocessing in the original image | Processes already downscaled image |
 | Fast optimized code | Slow Python loops |
 
-See [examples](/examples) for cscale0.1x capabilities demonstration.
+See [examples](examples/) for cscale0.1x capabilities demonstration.
 
 ## Installation
 
@@ -33,7 +32,7 @@ To install Python head over to [www.python.org](https://www.python.org/downloads
 
 *Notice. The program is tested for Python 3.13, but will probably work with later Python versions.*
 
-Create virtual environment and install packages:
+Create a virtual environment and install packages:
 
 ```
 python -m venv venv
