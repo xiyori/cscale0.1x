@@ -13,6 +13,8 @@ from src.getch import getch
 MIN_SCALE_FACTOR = 2.5
 MAX_SCALE_FACTOR = 15
 OPTIMAL_SCALE_FACTOR = 10
+DILATE_FACTOR_AREA = 0.5
+DILATE_FACTOR_DEFAULT = 1
 
 INTER_MODES = {
     "area": cv2.INTER_AREA,
@@ -21,6 +23,7 @@ INTER_MODES = {
     "linear": cv2.INTER_LINEAR,
     "nearest": cv2.INTER_NEAREST,
 }
+CONTOUR_MODES = ["precise", "darker", "dark", "lighter", "light", "none"]
 
 
 def parse_args():
@@ -69,45 +72,43 @@ def parse_args():
         "--dilate_factor",
         metavar="FACTOR",
         type=float,
-        default=0.5,
-        help="Contour dilation factor (default: %(default)s). "
-        "Larger values result in more pronounced contour.",
+        help="Contour dilation factor (default: auto). "
+        "Larger values result in a more pronounced contour.",
     )
     parser.add_argument(
-        "-p",
-        "--precise_contour",
-        action="store_true",
-        help="Produce a more accurate contour. Decreases sharpness.",
+        "-c",
+        "--contour",
+        metavar="MODE",
+        type=str,
+        choices=CONTOUR_MODES,
+        help="Set contour mode (default: auto). "
+        "Available modes are: " + ", ".join(CONTOUR_MODES) + ".",
     )
     parser.add_argument(
         "-i",
-        "--interpolation",
+        "--inter",
         metavar="MODE",
+        dest="interpolation",
         type=str,
         choices=list(INTER_MODES.keys()),
-        default="area",
+        default="lanczos",
         help="Set interpolation mode (default: %(default)s). "
         "Available modes are: " + ", ".join(list(INTER_MODES.keys())) + ".",
     )
     parser.add_argument(
         "-t",
-        "--threshold",
+        "--thresh",
+        dest="threshold",
         type=float,
         help="Detail threshold parameter (default: auto).",
     )
     parser.add_argument(
-        "--hysteresis",
+        "--hyst",
         metavar="T1,T2",
+        dest="hysteresis",
         type=int_pair,
         default="100,200",
         help="Parameters for OpenCV Canny algorithm. " "(default: %(default)s).",
-    )
-    parser.add_argument(
-        "-n",
-        "--no_preserve_contour",
-        action="store_true",
-        help="Turn off contour dilation for testing purposes. "
-        "Results in a simple interpolation with a selected interpolation mode.",
     )
     parser.add_argument(
         "--no_downscale",
@@ -187,13 +188,27 @@ def main():
             interpolation=cv2.INTER_AREA,
         )
 
+    dilate_factor = args.dilate_factor
+    contour_mode = args.contour
+    interpolation = args.interpolation
+    if INTER_MODES[interpolation] == cv2.INTER_AREA:
+        if contour_mode is None:
+            contour_mode = "darkest"
+        if dilate_factor is None:
+            dilate_factor = DILATE_FACTOR_AREA
+    else:
+        if contour_mode is None:
+            contour_mode = "precise"
+        if dilate_factor is None:
+            dilate_factor = DILATE_FACTOR_DEFAULT
+
     # Dilate contour
-    if not args.no_preserve_contour:
+    if contour_mode != "none":
         img = preserve_contour(
             img,
             target_width,
-            args.dilate_factor,
-            args.precise_contour,
+            dilate_factor,
+            contour_mode,
             args.hysteresis,
             args.threshold,
         )
@@ -203,11 +218,11 @@ def main():
         img = cv2.resize(
             img,
             (target_width, target_height),
-            interpolation=INTER_MODES[args.interpolation],
+            interpolation=INTER_MODES[interpolation],
         )
 
     basename = os.path.splitext(args.filename)[0]
-    savename = f"{basename}{'' if args.no_downscale else f'_{args.interpolation}'}{'' if args.no_preserve_contour else '_cscale0x'}.png"
+    savename = f"{basename}{'' if args.no_downscale else f'_{args.interpolation}'}{'' if contour_mode == 'none' else '_cscale0x'}.png"
 
     final_img = Image.fromarray(img)
     final_img.save(savename)
