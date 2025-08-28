@@ -2,9 +2,9 @@
 
 Contour-preserving adaptive downscaling for artwork, cartoons, pixel art, [wplace](https://wplace.live) image scaling, etc.
 
-[<img align="center" src="assets/demo.gif" alt="Demo gif" width="500px"/>](examples/)
+[<img align="center" src="assets/demo1.gif" alt="Demo gif 1" width="500px"/>](examples/)[<img align="center" src="assets/demo2.gif" alt="Demo gif 2" width="500px"/>](examples/)
 
-Demo: lanczos4 -> area -> cscale0.1x
+Demo: area -> cscale0.1x | lanczos -> cscale0.1x
 
 **Key features**
 
@@ -46,7 +46,10 @@ pip install -r requirements.txt
 
 The program can be used like this:
 
-`python main.py -s SCALE_FACTOR filename`
+```
+python main.py -s SCALE_FACTOR filename
+python main.py -s SCALE_FACTOR -i area filename
+```
 
 See the full usage manual by running:
 
